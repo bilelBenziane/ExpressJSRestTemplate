@@ -1,0 +1,22 @@
+{
+  "name": "rest-template",
+  "version": "1.0.0",
+  "description": "Just a express js template to speed up project starting process in the future",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rest",
+    "api",
+    "js",
+    "express",
+    "node",
+    "template"
+  ],
+  "author": "Bilel Abderrahmane BENZIANE",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
