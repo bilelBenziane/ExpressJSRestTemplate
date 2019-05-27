@@ -15,7 +15,7 @@ router.post('/', (req, res, next) => {
   };
   res.status(201).json({
     message: 'Handling POST request to Products',
-    createdProduct: product,
+    product,
   });
 });
 

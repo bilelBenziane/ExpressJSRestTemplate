@@ -4,14 +4,19 @@ const app = express();
 
 const morgan = require('morgan'); //  logging lib for logging requests
 
-const bodyParser = require('body-parser');
+// body parseer already included in this express version
+//  const bodyParser = require('body-parser'); 
 
 const productRoutes = require('./api/routes/products');
 const ordersRoutes = require('./api/routes/orders');
 
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+//  app.use(bodyParser.urlencoded({ extended: false }));
+//  app.use(bodyParser.json());
 
 //  route switch to handle requests
 app.use('/products', productRoutes);
