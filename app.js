@@ -4,11 +4,19 @@ const app = express();
 
 const morgan = require('morgan'); //  logging lib for logging requests
 
+const mongoose = require('mongoose');
+
 // body parseer already included in this express version
 //  const bodyParser = require('body-parser'); 
 
 const productRoutes = require('./api/routes/products');
 const ordersRoutes = require('./api/routes/orders');
+
+mongoose.connect(
+  'mongodb://localhost/testaroo', { useNewUrlParser: true },
+).then((result) => {
+}).catch((err) =>{
+}); 
 
 app.use(morgan('dev'));
 
@@ -23,6 +31,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
     res.status(200).json({});
   }
+  next();
 });
 
 //  app.use(bodyParser.urlencoded({ extended: false }));
