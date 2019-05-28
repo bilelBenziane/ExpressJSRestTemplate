@@ -5,9 +5,16 @@ const Product = require('../models/product');
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-  res.status(200).json({
-    message: 'Handling GET request to Products',
-  });
+  Product.find()
+    .exec()
+    .then((docs) => {
+      res.status(200).json(docs);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err,
+      });
+    });
 });
 
 router.post('/', (req, res, next) => {
@@ -18,44 +25,77 @@ router.post('/', (req, res, next) => {
   });
   product.save()
     .then(
-      (result) => {
-        console.log('passed : '+result);
+      () => {
+        res.status(201).json({
+          message: 'Handling POST request to Products',
+          product,
+        });
       },
     )
     .catch(
       (err) => {
-        console.log('error : '+err);
+        res.status(500).json({
+          error: err,
+        });
       },
     );
-  res.status(201).json({
-    message: 'Handling POST request to Products',
-    product,
-  });
 });
 
 router.get('/:productId', (req, res, next) => {
   const id = req.params.productId;
-  if (id === 'special') {
-    res.status(200).json({
-      message: 'You discovered the spicial ID',
+  Product.findById(id)
+    .exec()
+    .then((result) => {
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        res.status(404).json({
+          message: 'no valid entry id',
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err,
+      });
     });
-  } else {
-    res.status(200).json({
-      messgae: 'You passe ID',
-    });
-  }
 });
 
 router.patch('/:productId', (req, res, next) => {
+  const id = req.params.productId;
+  const updateOps = {};
+  // eslint-disable-next-line no-restricted-syntax
+  for (const ops of req.body) {
+    updateOps[ops.propName] = ops.value;
+  }
+  Product.update({ _id: id }, { $sets: updateOps })
+    .exec()
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err,
+      });
+    });
+
   res.status(200).json({
     message: 'Updated product',
   });
 });
 
 router.delete('/:productId', (req, res, next) => {
-  res.status(200).json({
-    message: 'Deleted product',
-  });
+  const id = req.params.productId;
+  Product.remove({ _id: id })
+    .exec()
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500).json({
+        error: err,
+      });
+    });
 });
 
 module.exports = router;

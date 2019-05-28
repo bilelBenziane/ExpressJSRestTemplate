@@ -15,7 +15,9 @@ const ordersRoutes = require('./api/routes/orders');
 mongoose.connect(
   'mongodb://localhost/testaroo', { useNewUrlParser: true },
 ).then((result) => {
+  console.log('connected db : '+result);
 }).catch((err) =>{
+  console.log('connection pb db : '+err);
 }); 
 
 app.use(morgan('dev'));
